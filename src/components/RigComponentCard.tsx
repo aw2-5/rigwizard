@@ -14,7 +14,7 @@ interface RigComponentCardProps {
 
 export const RigComponentCard = ({ component, isHighlighted = false }: RigComponentCardProps) => {
   const navigate = useNavigate();
-  const { id, name, description, category } = component;
+  const { id, nameArabic, descriptionArabic, category, categoryArabic } = component;
   
   const handleClick = () => {
     navigate(`/component/${id}`);
@@ -36,7 +36,7 @@ export const RigComponentCard = ({ component, isHighlighted = false }: RigCompon
             className="absolute -top-3 -right-3 z-10 font-medium text-white"
             style={{ backgroundColor: getCategoryColor(category) }}
           >
-            {category}
+            {categoryArabic}
           </Badge>
           <CardTitle className="text-lg font-medium flex items-center gap-2">
             <span 
@@ -45,12 +45,12 @@ export const RigComponentCard = ({ component, isHighlighted = false }: RigCompon
             >
               {id}
             </span>
-            <span className="text-rig-primary">{name}</span>
+            <span className="text-rig-primary">{nameArabic}</span>
           </CardTitle>
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <p className="text-sm text-rig-secondary line-clamp-3">{description}</p>
+        <p className="text-sm text-rig-secondary line-clamp-3">{descriptionArabic}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-end">
         <Button 
@@ -58,7 +58,7 @@ export const RigComponentCard = ({ component, isHighlighted = false }: RigCompon
           size="sm"
           className="gap-1 group-hover:text-rig-accent group-hover:bg-rig-accent/5"
         >
-          View Details
+          عرض التفاصيل
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
         </Button>
       </CardFooter>

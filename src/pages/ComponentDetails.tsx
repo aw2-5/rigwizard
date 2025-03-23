@@ -21,8 +21,8 @@ const ComponentDetails = () => {
   useEffect(() => {
     if (!component) {
       toast({
-        title: "Component not found",
-        description: `No component with ID ${componentId} exists.`,
+        title: "لم يتم العثور على المكون",
+        description: `لا يوجد مكون بالرقم ${componentId}.`,
         variant: "destructive"
       });
       navigate("/rig-diagram");
@@ -42,7 +42,7 @@ const ComponentDetails = () => {
           className="mb-6 gap-2 hover:bg-rig-accent/5 hover:text-rig-accent"
         >
           <ArrowLeft className="h-4 w-4" />
-          Back to Rig Diagram
+          العودة إلى مخطط الحفارة
         </Button>
         
         <div className="flex flex-col gap-6">
@@ -59,13 +59,13 @@ const ComponentDetails = () => {
                   className="font-medium text-white"
                   style={{ backgroundColor: getCategoryColor(component.category) }}
                 >
-                  {component.category}
+                  {component.categoryArabic}
                 </Badge>
               </div>
               
-              <h1 className="text-3xl font-bold mb-4 text-rig-primary">{component.name}</h1>
+              <h1 className="text-3xl font-bold mb-4 text-rig-primary">{component.nameArabic}</h1>
               <p className="text-rig-secondary text-lg max-w-3xl mb-6">
-                {component.description}
+                {component.descriptionArabic}
               </p>
             </div>
           </div>
@@ -74,11 +74,11 @@ const ComponentDetails = () => {
             <TabsList className="grid w-[400px] grid-cols-2">
               <TabsTrigger value="diagram" className="text-sm">
                 <Drill className="h-4 w-4 mr-2" />
-                Component in Diagram
+                المكون في المخطط
               </TabsTrigger>
               <TabsTrigger value="related" className="text-sm">
                 <Network className="h-4 w-4 mr-2" />
-                Related Components
+                المكونات ذات الصلة
               </TabsTrigger>
             </TabsList>
             
@@ -101,10 +101,10 @@ const ComponentDetails = () => {
                 <CardContent className="p-6">
                   <h2 className="text-xl font-semibold mb-4 text-rig-primary flex items-center gap-2">
                     <Network className="h-5 w-5 text-rig-accent" />
-                    Related Components
+                    المكونات ذات الصلة
                   </h2>
                   <p className="text-rig-secondary mb-6">
-                    The following components are directly related to the {component.name}:
+                    المكونات التالية ترتبط مباشرة بـ {component.nameArabic}:
                   </p>
                   <ComponentRelationships component={component} />
                 </CardContent>

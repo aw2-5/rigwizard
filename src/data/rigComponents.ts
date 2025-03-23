@@ -2,12 +2,15 @@
 export interface RigComponent {
   id: number;
   name: string;
+  nameArabic: string;
   description: string;
+  descriptionArabic: string;
   position: {
     x: number;
     y: number;
   };
   category: 'Hoisting' | 'Drilling' | 'Power' | 'Fluid' | 'Safety' | 'Housing' | 'Storage' | 'Other';
+  categoryArabic: string;
   related: number[];
 }
 
@@ -15,81 +18,111 @@ export const rigComponents: RigComponent[] = [
   {
     id: 1,
     name: "Crown Block and Water Table",
+    nameArabic: "كتلة التاج وطاولة الماء",
     description: "Located at the top of the derrick, the crown block is a set of pulleys through which the drilling line is threaded. The water table is a water-cooled bearing assembly at the crown of the derrick.",
+    descriptionArabic: "تقع في أعلى برج الحفر، كتلة التاج هي مجموعة من البكرات التي يتم تمرير خط الحفر من خلالها. طاولة الماء هي مجموعة محامل مبردة بالماء في تاج برج الحفر.",
     position: { x: 50, y: 10 },
     category: "Hoisting",
+    categoryArabic: "رفع",
     related: [3, 5, 7, 41]
   },
   {
     id: 2,
     name: "Catline Boom and Hoist Line",
+    nameArabic: "ذراع خط القط وخط الرفع",
     description: "An extension arm and line used for lifting and moving equipment around the rig floor.",
+    descriptionArabic: "ذراع امتداد وخط يستخدم لرفع ونقل المعدات حول أرضية الحفارة.",
     position: { x: 30, y: 20 },
     category: "Hoisting",
+    categoryArabic: "رفع",
     related: [1, 3, 7]
   },
   {
     id: 3,
     name: "Drilling Line",
+    nameArabic: "خط الحفر",
     description: "A wire rope used in the rig's pulley system to raise and lower the traveling block and hook.",
+    descriptionArabic: "حبل سلكي يستخدم في نظام البكرات في الحفارة لرفع وخفض الكتلة المتحركة والخطاف.",
     position: { x: 45, y: 30 },
     category: "Hoisting",
+    categoryArabic: "رفع",
     related: [1, 5, 7, 41, 42]
   },
   {
     id: 4,
     name: "Monkeyboard",
+    nameArabic: "لوحة الراكب",
     description: "A platform on the derrick where a worker (derrickman) stands to handle the upper portion of the drill pipe as it's run in or out of the wellbore.",
+    descriptionArabic: "منصة على برج الحفر حيث يقف العامل (رجل البرج) للتعامل مع الجزء العلوي من أنبوب الحفر أثناء إدخاله أو إخراجه من حفرة البئر.",
     position: { x: 45, y: 25 },
     category: "Drilling",
+    categoryArabic: "حفر",
     related: [7, 8]
   },
   {
     id: 5,
     name: "Traveling Block",
+    nameArabic: "الكتلة المتحركة",
     description: "A set of pulleys that moves up and down the derrick, connected to the drilling line.",
+    descriptionArabic: "مجموعة من البكرات التي تتحرك صعوداً ونزولاً في برج الحفر، متصلة بخط الحفر.",
     position: { x: 50, y: 35 },
     category: "Hoisting",
+    categoryArabic: "رفع",
     related: [1, 3, 6, 41, 42, 58]
   },
   {
     id: 6,
     name: "Top Drive",
+    nameArabic: "المحرك العلوي",
     description: "A modern alternative to the rotary table and kelly system, directly rotating the drill string from the top while allowing for pipe movement up and down.",
+    descriptionArabic: "بديل حديث لنظام الطاولة الدوارة والكيلي، يقوم بتدوير سلسلة الحفر مباشرة من الأعلى مع السماح بحركة الأنبوب للأعلى والأسفل.",
     position: { x: 50, y: 40 },
     category: "Drilling",
+    categoryArabic: "حفر",
     related: [5, 8, 37, 42, 51]
   },
   {
     id: 7,
     name: "Mast",
+    nameArabic: "البرج",
     description: "The tall structure that supports the crown block and drilling equipment, providing height for raising and lowering the drill string.",
+    descriptionArabic: "الهيكل الطويل الذي يدعم كتلة التاج ومعدات الحفر، ويوفر الارتفاع لرفع وخفض سلسلة الحفر.",
     position: { x: 50, y: 20 },
     category: "Hoisting",
+    categoryArabic: "رفع",
     related: [1, 4, 5, 57]
   },
   {
     id: 8,
     name: "Drill Pipe",
+    nameArabic: "أنبوب الحفر",
     description: "Steel pipe sections connected together to form the drill string, which transmits drilling fluid and rotation to the drill bit.",
+    descriptionArabic: "أقسام أنبوبية فولاذية متصلة معاً لتشكيل سلسلة الحفر، التي تنقل سائل الحفر والدوران إلى رأس الحفر.",
     position: { x: 50, y: 60 },
     category: "Drilling",
+    categoryArabic: "حفر",
     related: [6, 37, 38, 50]
   },
   {
     id: 9,
     name: "Doghouse",
+    nameArabic: "غرفة العمال",
     description: "A small enclosure on the rig floor that serves as an office for the driller and as a storage place for tools.",
+    descriptionArabic: "مكان صغير مغلق على أرضية الحفارة يعمل كمكتب للحفار ومكان لتخزين الأدوات.",
     position: { x: 20, y: 50 },
     category: "Housing",
+    categoryArabic: "إسكان",
     related: [39, 54, 60]
   },
   {
     id: 10,
     name: "Blowout Preventer",
+    nameArabic: "مانع الانفجار",
     description: "A large specialized valve used to seal, control, and monitor oil and gas wells to prevent uncontrolled release of formation fluids.",
+    descriptionArabic: "صمام متخصص كبير يستخدم لإغلاق ومراقبة آبار النفط والغاز للحيلولة دون الإطلاق غير المنضبط لسوائل التكوين.",
     position: { x: 50, y: 80 },
     category: "Safety",
+    categoryArabic: "أمان",
     related: [22, 25, 28, 48]
   },
   {
@@ -501,6 +534,22 @@ export const rigComponents: RigComponent[] = [
     related: [8, 37, 39]
   }
 ];
+
+// Helper function to map Arabic categories to English for color lookup
+function categoryArabicToEnglish(arabicCategory: string): string {
+  const categoryMap: Record<string, string> = {
+    'رفع': 'Hoisting',
+    'حفر': 'Drilling',
+    'طاقة': 'Power',
+    'سوائل': 'Fluid',
+    'أمان': 'Safety',
+    'إسكان': 'Housing',
+    'تخزين': 'Storage',
+    'أخرى': 'Other'
+  };
+
+  return categoryMap[arabicCategory] || 'Other';
+}
 
 export const getCategoryColor = (category: string): string => {
   const colorMap: Record<string, string> = {

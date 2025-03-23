@@ -25,7 +25,7 @@ const RigDiagram = () => {
   // Filter components based on search query
   const filteredComponents = searchQuery
     ? rigComponents.filter(component => 
-        component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        component.nameArabic.toLowerCase().includes(searchQuery.toLowerCase()) ||
         component.id.toString() === searchQuery
       )
     : rigComponents;
@@ -43,10 +43,10 @@ const RigDiagram = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2 text-rig-primary flex items-center gap-2">
                 <Drill className="h-6 w-6 text-rig-accent" />
-                Drilling Rig Components
+                مكونات حفارة النفط
               </h1>
               <p className="text-rig-secondary text-lg">
-                Explore and learn about all 61 components of an oil drilling rig
+                استكشف وتعلم عن جميع مكونات حفارة النفط الـ 61
               </p>
             </div>
           </div>
@@ -61,11 +61,11 @@ const RigDiagram = () => {
               <TabsList className="grid w-[400px] grid-cols-2">
                 <TabsTrigger value="diagram" className="text-sm">
                   <Drill className="h-4 w-4 mr-2" />
-                  Interactive Diagram
+                  المخطط التفاعلي
                 </TabsTrigger>
                 <TabsTrigger value="list" className="text-sm">
                   <Info className="h-4 w-4 mr-2" />
-                  Component List
+                  قائمة المكونات
                 </TabsTrigger>
               </TabsList>
               
@@ -75,7 +75,7 @@ const RigDiagram = () => {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search components..."
+                  placeholder="البحث عن المكونات..."
                   className="w-full pl-10 pr-4 py-2 bg-white border border-rig-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-rig-accent focus:border-transparent"
                 />
               </div>
@@ -98,7 +98,7 @@ const RigDiagram = () => {
               
               {selectedComponent && (
                 <div className="mt-8 animate-scale">
-                  <h2 className="text-xl font-semibold mb-3 text-rig-primary">Selected Component</h2>
+                  <h2 className="text-xl font-semibold mb-3 text-rig-primary">المكون المحدد</h2>
                   <RigComponentCard 
                     component={selectedComponent} 
                     isHighlighted={true}
@@ -124,12 +124,12 @@ const RigDiagram = () => {
               {searchQuery && filteredComponents.length === 0 && (
                 <div className="bg-white border border-rig-border rounded-lg p-8 text-center">
                   <Search className="h-10 w-10 mx-auto mb-4 text-rig-secondary opacity-50" />
-                  <h3 className="text-lg font-medium mb-2 text-rig-primary">No components found</h3>
+                  <h3 className="text-lg font-medium mb-2 text-rig-primary">لا توجد مكونات</h3>
                   <p className="text-rig-secondary mb-6">
-                    No components match your search query: <strong>"{searchQuery}"</strong>
+                    لا توجد مكونات تطابق مصطلح البحث: <strong>"{searchQuery}"</strong>
                   </p>
                   <Button onClick={() => setSearchQuery("")}>
-                    Clear Search
+                    مسح البحث
                   </Button>
                 </div>
               )}
