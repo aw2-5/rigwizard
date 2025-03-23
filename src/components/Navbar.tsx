@@ -38,7 +38,7 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               asChild
-              className="group mr-2"
+              className="group ml-2" // Changed from mr-2 to ml-2 for RTL
             >
               <Link to="/">
                 <ArrowLeft 
@@ -50,7 +50,7 @@ export function Navbar() {
           
           <Link to="/" className="flex items-center gap-2 transition-all hover:opacity-80">
             <Drill className="h-6 w-6 text-rig-accent" />
-            <span className="text-xl font-medium tracking-tight">RigWizard</span>
+            <span className="text-xl font-medium tracking-tight">أدوات الحفر</span>
           </Link>
         </div>
         
@@ -64,7 +64,7 @@ export function Navbar() {
               )}
             >
               <Home className="h-4 w-4" />
-              <span>Home</span>
+              <span>الرئيسية</span>
             </Link>
           </Button>
           
@@ -77,7 +77,7 @@ export function Navbar() {
               )}
             >
               <Drill className="h-4 w-4" />
-              <span>Rig Diagram</span>
+              <span>مخطط الحفارة</span>
             </Link>
           </Button>
         </nav>

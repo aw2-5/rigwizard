@@ -6,6 +6,18 @@ import { ChevronRight, Drill, List, Search, Shield, Wrench } from "lucide-react"
 import { cn } from "@/lib/utils";
 import { getCategoryColor, groupComponentsByCategory } from "@/data/rigComponents";
 
+// Arabic translation mapping for categories
+const categoryEnglishToArabic: Record<string, string> = {
+  'Hoisting': 'رفع',
+  'Drilling': 'حفر',
+  'Power': 'طاقة',
+  'Fluid': 'سوائل',
+  'Safety': 'أمان',
+  'Housing': 'إسكان',
+  'Storage': 'تخزين',
+  'Other': 'أخرى'
+};
+
 const Index = () => {
   const navigate = useNavigate();
   const categoryGroups = groupComponentsByCategory();
@@ -17,13 +29,17 @@ const Index = () => {
         <section className="flex flex-col items-center justify-center text-center py-16 md:py-24">
           <div className="relative">
             <div className="absolute inset-0 -z-10 opacity-10 blur-3xl rounded-full bg-rig-accent" />
-            <Drill className="h-20 w-20 text-rig-accent mb-6 animate-float" />
+            <img 
+              src="/lovable-uploads/8af4af26-5e68-48c8-afe2-9f28fde5c073.png" 
+              alt="حفارة نفط" 
+              className="h-[300px] mb-6 animate-float" 
+            />
           </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-clip-text text-rig-primary">
-            Welcome to RigWizard
+            مرحبًا بك في أدوات الحفر
           </h1>
           <p className="text-lg md:text-xl text-rig-secondary max-w-2xl mx-auto mb-8 text-balance">
-            Explore the components of an oil drilling rig with this interactive visualization tool.
+            استكشف مكونات حفارة النفط من خلال هذه الأداة التفاعلية للتصور.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <Button
@@ -33,7 +49,7 @@ const Index = () => {
               style={{ animationDelay: "100ms" }}
             >
               <Drill className="h-5 w-5" />
-              Explore Rig Diagram
+              استكشاف مخطط الحفارة
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>
@@ -43,47 +59,47 @@ const Index = () => {
         <section className="py-16 bg-rig-muted rounded-3xl my-16">
           <div className="container max-w-6xl">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-rig-primary">Features</h2>
+              <h2 className="text-3xl font-bold mb-4 text-rig-primary">المميزات</h2>
               <p className="text-lg text-rig-secondary max-w-2xl mx-auto">
-                RigWizard helps you understand the complex structure and relationships between different components of a drilling rig.
+                تساعدك أدوات الحفر على فهم الهيكل المعقد والعلاقات بين المكونات المختلفة لحفارة النفط.
               </p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {[
                 {
-                  title: "Interactive Diagram",
-                  description: "Explore the rig components with an interactive SVG diagram that highlights related components.",
+                  title: "مخطط تفاعلي",
+                  description: "استكشف مكونات الحفارة مع مخطط SVG تفاعلي يسلط الضوء على المكونات ذات الصلة.",
                   icon: <Drill className="h-10 w-10 text-rig-accent" />,
                   delay: "0ms"
                 },
                 {
-                  title: "Comprehensive Database",
-                  description: "Access detailed information about all 61 components and their relationships.",
+                  title: "قاعدة بيانات شاملة",
+                  description: "الوصول إلى معلومات مفصلة حول جميع المكونات الـ 61 وعلاقاتها.",
                   icon: <List className="h-10 w-10 text-rig-accent" />,
                   delay: "150ms"
                 },
                 {
-                  title: "Component Search",
-                  description: "Quickly find specific components using the search functionality.",
+                  title: "بحث المكونات",
+                  description: "العثور بسرعة على مكونات محددة باستخدام وظيفة البحث.",
                   icon: <Search className="h-10 w-10 text-rig-accent" />,
                   delay: "300ms"
                 },
                 {
-                  title: "Related Components",
-                  description: "See which components are related to each other and how they interact.",
+                  title: "المكونات ذات الصلة",
+                  description: "معرفة المكونات المرتبطة ببعضها البعض وكيفية تفاعلها.",
                   icon: <Wrench className="h-10 w-10 text-rig-accent" />,
                   delay: "450ms"
                 },
                 {
-                  title: "Category Classification",
-                  description: "Components are organized by categories for easier understanding.",
+                  title: "تصنيف الفئات",
+                  description: "يتم تنظيم المكونات حسب الفئات لفهم أسهل.",
                   icon: <Shield className="h-10 w-10 text-rig-accent" />,
                   delay: "600ms"
                 },
                 {
-                  title: "Responsive Design",
-                  description: "Access RigWizard on any device with our responsive interface.",
+                  title: "تصميم متجاوب",
+                  description: "الوصول إلى أدوات الحفر على أي جهاز مع واجهة متجاوبة.",
                   icon: <Drill className="h-10 w-10 text-rig-accent" />,
                   delay: "750ms"
                 }
@@ -108,9 +124,9 @@ const Index = () => {
         <section className="py-16">
           <div className="container max-w-6xl">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4 text-rig-primary">Component Categories</h2>
+              <h2 className="text-3xl font-bold mb-4 text-rig-primary">فئات المكونات</h2>
               <p className="text-lg text-rig-secondary max-w-2xl mx-auto">
-                Drilling rigs consist of various specialized components organized by function.
+                تتكون حفارات النفط من مكونات متخصصة مختلفة منظمة حسب الوظيفة.
               </p>
             </div>
             
@@ -126,10 +142,10 @@ const Index = () => {
                       className="w-4 h-4 rounded-full"
                       style={{ backgroundColor: getCategoryColor(category) }}
                     />
-                    <h3 className="text-lg font-semibold text-rig-primary">{category}</h3>
+                    <h3 className="text-lg font-semibold text-rig-primary">{categoryEnglishToArabic[category] || category}</h3>
                   </div>
                   <p className="mb-3 text-sm text-rig-secondary">
-                    {components.length} component{components.length !== 1 ? 's' : ''}
+                    {components.length} عنصر
                   </p>
                   <ul className="text-sm space-y-1 text-rig-secondary">
                     {components.slice(0, 3).map(component => (
@@ -139,7 +155,7 @@ const Index = () => {
                     ))}
                     {components.length > 3 && (
                       <li className="text-rig-accent font-medium text-xs mt-2 cursor-pointer" onClick={() => navigate("/rig-diagram")}>
-                        + {components.length - 3} more components
+                        + {components.length - 3} عنصر آخر
                       </li>
                     )}
                   </ul>
@@ -154,7 +170,7 @@ const Index = () => {
                 className="gap-2"
                 onClick={() => navigate("/rig-diagram")}
               >
-                View All Components
+                عرض جميع المكونات
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -164,16 +180,16 @@ const Index = () => {
         {/* CTA Section */}
         <section className="bg-gradient-to-r from-rig-primary to-rig-accent rounded-3xl my-16 py-16 text-white">
           <div className="container max-w-6xl text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Explore?</h2>
+            <h2 className="text-3xl font-bold mb-4">جاهز للاستكشاف؟</h2>
             <p className="text-lg opacity-90 max-w-2xl mx-auto mb-8">
-              Dive into the interactive rig diagram and discover how all the components work together.
+              انغمس في مخطط الحفارة التفاعلي واكتشف كيف تعمل جميع المكونات معًا.
             </p>
             <Button
               size="lg"
               className="bg-white text-rig-accent hover:bg-white/90 gap-2"
               onClick={() => navigate("/rig-diagram")}
             >
-              Explore Now
+              استكشف الآن
               <ChevronRight className="h-4 w-4" />
             </Button>
           </div>

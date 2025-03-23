@@ -3,14 +3,14 @@ import { cn } from "@/lib/utils";
 import { getCategoryColor } from "@/data/rigComponents";
 
 const categories = [
-  "Hoisting",
-  "Drilling",
-  "Power",
-  "Fluid",
-  "Safety",
-  "Housing",
-  "Storage",
-  "Other"
+  "رفع",
+  "حفر",
+  "طاقة",
+  "سوائل",
+  "أمان",
+  "إسكان",
+  "تخزين",
+  "أخرى"
 ];
 
 export const CategoryLegend = () => {
@@ -25,7 +25,7 @@ export const CategoryLegend = () => {
             className={cn(
               "inline-block w-3 h-3 rounded-full"
             )}
-            style={{ backgroundColor: getCategoryColor(category) }}
+            style={{ backgroundColor: getCategoryColor(categoryArabicToEnglish(category)) }}
           />
           <span className="text-rig-primary">{category}</span>
         </div>
@@ -33,3 +33,19 @@ export const CategoryLegend = () => {
     </div>
   );
 };
+
+// Helper function to map Arabic categories to English for color lookup
+function categoryArabicToEnglish(arabicCategory: string): string {
+  const categoryMap: Record<string, string> = {
+    'رفع': 'Hoisting',
+    'حفر': 'Drilling',
+    'طاقة': 'Power',
+    'سوائل': 'Fluid',
+    'أمان': 'Safety',
+    'إسكان': 'Housing',
+    'تخزين': 'Storage',
+    'أخرى': 'Other'
+  };
+
+  return categoryMap[arabicCategory] || 'Other';
+}
