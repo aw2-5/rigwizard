@@ -1,14 +1,26 @@
+
 import { useState, useEffect, useRef, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { rigComponents, getCategoryColor } from "@/data/rigComponents";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
-import { ZoomIn, ZoomOut, RotateCcw, Search } from "lucide-react";
+import { 
+  ZoomIn, 
+  ZoomOut, 
+  RotateCcw, 
+  Search, 
+  Maximize2, 
+  Minimize2, 
+  HelpCircle, 
+  Info 
+} from "lucide-react";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 const ComponentBadge = memo(({ 
   id, 
   name, 
+  nameArabic,
   x, 
   y, 
   isHighlighted, 
@@ -20,6 +32,7 @@ const ComponentBadge = memo(({
 }: { 
   id: number;
   name: string;
+  nameArabic: string;
   x: number;
   y: number;
   isHighlighted: boolean;
@@ -54,6 +67,16 @@ const ComponentBadge = memo(({
       onMouseLeave={onMouseLeave}
       onClick={onClick}
     >
+      {/* Background glow for highlighted items */}
+      {isPrimaryHighlighted && (
+        <circle
+          cx={x}
+          cy={y}
+          r={textWidth / 1.5}
+          fill={getCategoryColor(category)}
+          className="opacity-20 animate-pulse"
+        />
+      )}
       <rect
         x={x - textWidth / 2}
         y={y - 15}
@@ -70,14 +93,24 @@ const ComponentBadge = memo(({
       <text
         ref={textRef}
         x={x}
-        y={y + 5}
+        y={y - 2}
         textAnchor="middle"
         fill="white"
-        fontSize={12}
+        fontSize={11}
         fontWeight={isPrimaryHighlighted ? "600" : "500"}
         className="select-none pointer-events-none text-shadow"
       >
         {id}. {name}
+      </text>
+      <text
+        x={x}
+        y={y + 10}
+        textAnchor="middle"
+        fill="white"
+        fontSize={9}
+        className="select-none pointer-events-none text-shadow opacity-90"
+      >
+        {nameArabic}
       </text>
     </g>
   );
@@ -149,6 +182,8 @@ export const RigDiagramSVG = ({
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<number[]>([]);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [showHelp, setShowHelp] = useState(false);
   
   const handleZoom = (direction: 'in' | 'out') => {
     setScale(prevScale => {
@@ -167,6 +202,21 @@ export const RigDiagramSVG = ({
       title: "تم إعادة ضبط العرض",
       description: "تم إعادة ضبط عرض المخطط إلى الإعدادات الافتراضية"
     });
+  };
+  
+  const toggleFullscreen = () => {
+    setFullscreen(!fullscreen);
+    
+    if (!fullscreen) {
+      toast({
+        title: "وضع ملء الشاشة",
+        description: "تم تفعيل وضع العرض بملء الشاشة للمخطط التفاعلي"
+      });
+    }
+  };
+  
+  const toggleHelp = () => {
+    setShowHelp(!showHelp);
   };
   
   const handleComponentClick = (id: number) => {
@@ -255,34 +305,107 @@ export const RigDiagramSVG = ({
   };
 
   return (
-    <div className="relative w-full overflow-hidden rounded-xl border border-rig-border bg-gradient-to-br from-blue-50/50 via-white to-sky-50/50">
-      <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
-        <Button
-          variant="secondary"
-          size="icon"
-          onClick={() => handleZoom('in')}
-          className="bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
-        >
-          <ZoomIn className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          onClick={() => handleZoom('out')}
-          className="bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
-        >
-          <ZoomOut className="h-4 w-4" />
-        </Button>
-        <Button
-          variant="secondary"
-          size="icon"
-          onClick={handleResetView}
-          className="bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
-        >
-          <RotateCcw className="h-4 w-4" />
-        </Button>
+    <div className={cn(
+      "relative w-full overflow-hidden rounded-xl border border-rig-border bg-gradient-to-br from-blue-50/50 via-white to-sky-50/50 transition-all duration-300",
+      fullscreen ? "fixed inset-0 z-50 m-0 rounded-none border-0" : ""
+    )}>
+      {/* Toolbar */}
+      <div className="absolute top-4 left-4 z-10 flex flex-col gap-2 bg-white/70 backdrop-blur-sm p-2 rounded-lg shadow-sm">
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() => handleZoom('in')}
+                className="bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
+              >
+                <ZoomIn className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p>تكبير</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={() => handleZoom('out')}
+                className="bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
+              >
+                <ZoomOut className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p>تصغير</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={handleResetView}
+                className="bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
+              >
+                <RotateCcw className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p>إعادة ضبط العرض</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={toggleFullscreen}
+                className="bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm"
+              >
+                {fullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p>{fullscreen ? 'إلغاء ملء الشاشة' : 'ملء الشاشة'}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+        
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="secondary"
+                size="icon"
+                onClick={toggleHelp}
+                className={cn(
+                  "bg-white/80 backdrop-blur-sm hover:bg-white shadow-sm",
+                  showHelp && "bg-rig-accent text-white hover:bg-rig-accent/90"
+                )}
+              >
+                <HelpCircle className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">
+              <p>تعليمات الاستخدام</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
       
+      {/* Search Bar */}
       <div className="absolute top-4 right-4 z-10 w-64">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -310,9 +433,16 @@ export const RigDiagramSVG = ({
                     }}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="font-semibold">{component.id}.</span>
-                      <span className="font-medium">{component.name}</span>
-                      <span className="text-xs text-rig-secondary">{component.nameArabic}</span>
+                      <span 
+                        className="w-5 h-5 flex items-center justify-center rounded-full text-white text-xs"
+                        style={{ backgroundColor: getCategoryColor(component.category) }}
+                      >
+                        {component.id}
+                      </span>
+                      <div className="flex flex-col">
+                        <span className="font-medium text-sm">{component.name}</span>
+                        <span className="text-xs text-rig-secondary">{component.nameArabic}</span>
+                      </div>
                     </div>
                   </div>
                 );
@@ -321,6 +451,48 @@ export const RigDiagramSVG = ({
           )}
         </div>
       </div>
+      
+      {/* Help Instructions */}
+      {showHelp && (
+        <div className="absolute bottom-4 right-4 z-10 w-72 bg-white/90 backdrop-blur-sm rounded-lg p-4 shadow-lg border border-rig-border">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-medium text-rig-primary flex items-center gap-1">
+              <Info className="h-4 w-4 text-rig-accent" />
+              تعليمات استخدام المخطط
+            </h3>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="h-6 w-6" 
+              onClick={toggleHelp}
+            >
+              <Info className="h-4 w-4" />
+            </Button>
+          </div>
+          <ul className="text-sm space-y-2 text-rig-secondary">
+            <li className="flex items-start gap-2">
+              <span className="text-rig-accent">•</span>
+              <span>استخدم زر التكبير <ZoomIn className="inline h-3 w-3" /> والتصغير <ZoomOut className="inline h-3 w-3" /> للتحكم في حجم المخطط</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-rig-accent">•</span>
+              <span>اضغط واسحب لتحريك المخطط</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-rig-accent">•</span>
+              <span>انقر على أي مكون لعرض تفاصيله</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-rig-accent">•</span>
+              <span>مرر المؤشر فوق مكون لرؤية ارتباطاته</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-rig-accent">•</span>
+              <span>استخدم شريط البحث للعثور على مكون محدد</span>
+            </li>
+          </ul>
+        </div>
+      )}
       
       <svg
         ref={svgRef}
@@ -348,21 +520,32 @@ export const RigDiagramSVG = ({
               }
             `}
           </style>
+          
+          {/* Radial gradient background */}
+          <radialGradient id="rig-bg-gradient" cx="50%" cy="50%" r="70%" fx="50%" fy="50%">
+            <stop offset="0%" stopColor="#ffffff" />
+            <stop offset="100%" stopColor="#f3f8ff" />
+          </radialGradient>
         </defs>
+        
+        {/* Modern background pattern */}
+        <rect width={width} height={height} fill="url(#rig-bg-gradient)" />
+        
+        {/* Subtle grid pattern */}
+        <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
+          <path 
+            d="M 50 0 L 0 0 0 50" 
+            fill="none" 
+            stroke="#f3f4f6" 
+            strokeWidth="1"
+          />
+        </pattern>
+        <rect width={width} height={height} fill="url(#grid)" opacity="0.6" />
+        
         <g 
           transform={`translate(${pan.x}, ${pan.y}) scale(${scale})`}
           className="transition-transform duration-300 ease-out"
         >
-          <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
-            <path 
-              d="M 50 0 L 0 0 0 50" 
-              fill="none" 
-              stroke="#f3f4f6" 
-              strokeWidth="1"
-            />
-          </pattern>
-          <rect width={width} height={height} fill="url(#grid)" opacity="0.6" />
-          
           {renderConnectionLines()}
           
           {rigComponents.map(component => {
@@ -384,6 +567,7 @@ export const RigDiagramSVG = ({
                 key={`component-${component.id}`}
                 id={component.id}
                 name={component.name}
+                nameArabic={component.nameArabic}
                 x={component.position.x * 10}
                 y={component.position.y * 7}
                 isHighlighted={isHighlighted}
@@ -397,6 +581,19 @@ export const RigDiagramSVG = ({
           })}
         </g>
       </svg>
+      
+      {/* Fullscreen exit button */}
+      {fullscreen && (
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={toggleFullscreen}
+          className="absolute bottom-4 left-4 z-10 bg-white/80 backdrop-blur-sm border border-rig-border shadow-sm"
+        >
+          <Minimize2 className="h-4 w-4 mr-2" />
+          إغلاق وضع ملء الشاشة
+        </Button>
+      )}
     </div>
   );
 };

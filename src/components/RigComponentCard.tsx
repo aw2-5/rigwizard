@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Info } from "lucide-react";
 import { RigComponent, getCategoryColor } from "@/data/rigComponents";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface RigComponentCardProps {
   component: RigComponent;
@@ -23,21 +24,31 @@ export const RigComponentCard = ({ component, isHighlighted = false }: RigCompon
   return (
     <Card 
       className={cn(
-        "group h-full transition-all duration-300 cursor-pointer border overflow-hidden bg-gradient-to-br from-white to-gray-50",
+        "group h-full transition-all duration-300 cursor-pointer overflow-hidden bg-gradient-to-br from-white to-gray-50 hover:shadow-md",
         isHighlighted 
-          ? "border-rig-accent shadow-md ring-1 ring-rig-accent/20" 
-          : "border-rig-border hover:shadow-md hover:border-rig-accent/50"
+          ? "border-rig-accent shadow-md ring-1 ring-rig-accent/20 scale-[1.01]" 
+          : "border-rig-border hover:border-rig-accent/50"
       )}
       onClick={handleClick}
     >
       <CardHeader className="relative p-4 pb-3">
         <div className="flex items-center justify-between gap-2">
-          <Badge 
-            className="absolute -top-3 -right-3 z-10 font-medium text-white"
-            style={{ backgroundColor: getCategoryColor(category) }}
-          >
-            {categoryArabic}
-          </Badge>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge 
+                  className="absolute -top-3 -right-3 z-10 font-medium text-white shadow-sm"
+                  style={{ backgroundColor: getCategoryColor(category) }}
+                >
+                  {categoryArabic}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent side="top">
+                <p className="text-xs">فئة المكون</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          
           <CardTitle className="text-lg font-medium flex items-center gap-2">
             <span 
               className="flex items-center justify-center h-6 w-6 rounded-full text-xs text-white"

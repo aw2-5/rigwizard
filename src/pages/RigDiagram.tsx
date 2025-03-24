@@ -9,7 +9,7 @@ import { rigComponents } from "@/data/rigComponents";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Info, Search, Drill } from "lucide-react";
+import { Info, Search, Drill, HelpCircle } from "lucide-react";
 
 const RigDiagram = () => {
   const navigate = useNavigate();
@@ -58,8 +58,8 @@ const RigDiagram = () => {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <div className="flex items-center justify-between mb-6">
-              <TabsList className="grid w-[400px] grid-cols-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <TabsList className="grid w-full sm:w-[400px] grid-cols-2">
                 <TabsTrigger value="diagram" className="text-sm">
                   <Drill className="h-4 w-4 mr-2" />
                   المخطط التفاعلي
@@ -70,7 +70,7 @@ const RigDiagram = () => {
                 </TabsTrigger>
               </TabsList>
               
-              <div className="relative w-64">
+              <div className="relative w-full sm:w-64">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <input
                   type="text"
@@ -93,13 +93,31 @@ const RigDiagram = () => {
                 />
               </div>
               
-              <div className="mt-6">
+              <div className="mt-6 flex justify-between items-center">
                 <CategoryLegend />
+                
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="gap-2 text-rig-secondary border-rig-border"
+                  onClick={() => {}}
+                >
+                  <HelpCircle className="h-4 w-4" />
+                  كيفية الاستخدام
+                </Button>
               </div>
               
               {selectedComponent && (
                 <div className="mt-8 animate-scale">
-                  <h2 className="text-xl font-semibold mb-3 text-rig-primary">المكون المحدد</h2>
+                  <h2 className="text-xl font-semibold mb-3 text-rig-primary flex items-center gap-2">
+                    <span 
+                      className="w-6 h-6 flex items-center justify-center rounded-full text-white text-xs"
+                      style={{ backgroundColor: selectedComponent.category ? selectedComponent.category : '#6B7280' }}
+                    >
+                      {selectedComponent.id}
+                    </span>
+                    المكون المحدد: {selectedComponent.nameArabic}
+                  </h2>
                   <RigComponentCard 
                     component={selectedComponent} 
                     isHighlighted={true}
