@@ -14,7 +14,7 @@ interface RigComponentCardProps {
 
 export const RigComponentCard = ({ component, isHighlighted = false }: RigComponentCardProps) => {
   const navigate = useNavigate();
-  const { id, nameArabic, descriptionArabic, category, categoryArabic } = component;
+  const { id, name, nameArabic, descriptionArabic, category, categoryArabic } = component;
   
   const handleClick = () => {
     navigate(`/component/${id}`);
@@ -23,7 +23,7 @@ export const RigComponentCard = ({ component, isHighlighted = false }: RigCompon
   return (
     <Card 
       className={cn(
-        "group h-full transition-all duration-300 cursor-pointer border overflow-hidden",
+        "group h-full transition-all duration-300 cursor-pointer border overflow-hidden bg-gradient-to-br from-white to-gray-50",
         isHighlighted 
           ? "border-rig-accent shadow-md ring-1 ring-rig-accent/20" 
           : "border-rig-border hover:shadow-md hover:border-rig-accent/50"
@@ -45,12 +45,15 @@ export const RigComponentCard = ({ component, isHighlighted = false }: RigCompon
             >
               {id}
             </span>
-            <span className="text-rig-primary">{nameArabic}</span>
+            <div className="flex flex-col">
+              <span className="text-rig-primary text-sm font-bold rtl:text-right">{name}</span>
+              <span className="text-rig-secondary text-xs rtl:text-right">{nameArabic}</span>
+            </div>
           </CardTitle>
         </div>
       </CardHeader>
       <CardContent className="p-4 pt-0">
-        <p className="text-sm text-rig-secondary line-clamp-3">{descriptionArabic}</p>
+        <p className="text-sm text-rig-secondary line-clamp-3 rtl:text-right">{descriptionArabic}</p>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-end">
         <Button 

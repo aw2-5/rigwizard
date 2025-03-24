@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef, memo } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
@@ -84,8 +83,6 @@ const ComponentBadge = memo(({
   );
 });
 
-ComponentBadge.displayName = "ComponentBadge";
-
 const ConnectorLine = memo(({ 
   startX, 
   startY, 
@@ -127,8 +124,6 @@ const ConnectorLine = memo(({
   );
 });
 
-ConnectorLine.displayName = "ConnectorLine";
-
 interface RigDiagramSVGProps {
   width?: number;
   height?: number;
@@ -155,7 +150,6 @@ export const RigDiagramSVG = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<number[]>([]);
   
-  // Handle zooming
   const handleZoom = (direction: 'in' | 'out') => {
     setScale(prevScale => {
       const newScale = direction === 'in' 
@@ -166,17 +160,15 @@ export const RigDiagramSVG = ({
     });
   };
   
-  // Handle resetting view
   const handleResetView = () => {
     setScale(initialScale);
     setPan({ x: 0, y: 0 });
     toast({
-      title: "View Reset",
-      description: "Diagram view has been reset to default"
+      title: "تم إعادة ضبط العرض",
+      description: "تم إعادة ضبط عرض المخطط إلى الإعدادات الافتراضية"
     });
   };
   
-  // Handle clicking on a component
   const handleComponentClick = (id: number) => {
     if (onComponentClick) {
       onComponentClick(id);
@@ -185,7 +177,6 @@ export const RigDiagramSVG = ({
     }
   };
   
-  // Handle mouse events for dragging
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.button === 0) { // Left mouse button
       setDragging(true);
@@ -206,7 +197,6 @@ export const RigDiagramSVG = ({
     setDragging(false);
   };
   
-  // Handle search
   useEffect(() => {
     if (searchQuery.trim() === "") {
       setSearchResults([]);
@@ -217,6 +207,7 @@ export const RigDiagramSVG = ({
     const results = rigComponents
       .filter(component => 
         component.name.toLowerCase().includes(query) || 
+        component.nameArabic.toLowerCase().includes(query) ||
         component.id.toString() === query
       )
       .map(component => component.id);
@@ -224,21 +215,17 @@ export const RigDiagramSVG = ({
     setSearchResults(results);
   }, [searchQuery]);
   
-  // Create connection lines between related components
   const renderConnectionLines = () => {
     const connections: JSX.Element[] = [];
     
     rigComponents.forEach(component => {
       const { id, position, related } = component;
       
-      // Determine if this component or its connections should be highlighted
       const isComponentHighlighted = 
         highlightedComponentId === id || 
         hoveredComponent === id;
       
-      // For each related component, draw a line
       related.forEach(relatedId => {
-        // Only draw the connection once (from smaller ID to larger ID)
         if (id < relatedId) {
           const relatedComponent = rigComponents.find(c => c.id === relatedId);
           
@@ -267,9 +254,8 @@ export const RigDiagramSVG = ({
     return connections;
   };
 
-  // Render the SVG components
   return (
-    <div className="relative w-full overflow-hidden rounded-xl border border-rig-border bg-white">
+    <div className="relative w-full overflow-hidden rounded-xl border border-rig-border bg-gradient-to-br from-blue-50/50 via-white to-sky-50/50">
       <div className="absolute top-4 left-4 z-10 flex flex-col gap-2">
         <Button
           variant="secondary"
@@ -304,7 +290,7 @@ export const RigDiagramSVG = ({
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search components..."
+            placeholder="البحث عن المكونات..."
             className="w-full pl-10 pr-4 py-2 bg-white/80 backdrop-blur-sm border border-rig-border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-rig-accent focus:border-transparent"
           />
           
@@ -325,7 +311,8 @@ export const RigDiagramSVG = ({
                   >
                     <div className="flex items-center gap-2">
                       <span className="font-semibold">{component.id}.</span>
-                      <span>{component.name}</span>
+                      <span className="font-medium">{component.name}</span>
+                      <span className="text-xs text-rig-secondary">{component.nameArabic}</span>
                     </div>
                   </div>
                 );
@@ -366,7 +353,6 @@ export const RigDiagramSVG = ({
           transform={`translate(${pan.x}, ${pan.y}) scale(${scale})`}
           className="transition-transform duration-300 ease-out"
         >
-          {/* Background grid */}
           <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse">
             <path 
               d="M 50 0 L 0 0 0 50" 
@@ -377,10 +363,8 @@ export const RigDiagramSVG = ({
           </pattern>
           <rect width={width} height={height} fill="url(#grid)" opacity="0.6" />
           
-          {/* Connection lines */}
           {renderConnectionLines()}
           
-          {/* Component badges */}
           {rigComponents.map(component => {
             const isHighlighted = 
               searchResults.includes(component.id) ||

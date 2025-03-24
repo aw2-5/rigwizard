@@ -25,6 +25,7 @@ const RigDiagram = () => {
   // Filter components based on search query
   const filteredComponents = searchQuery
     ? rigComponents.filter(component => 
+        component.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         component.nameArabic.toLowerCase().includes(searchQuery.toLowerCase()) ||
         component.id.toString() === searchQuery
       )
@@ -43,7 +44,7 @@ const RigDiagram = () => {
             <div>
               <h1 className="text-3xl font-bold mb-2 text-rig-primary flex items-center gap-2">
                 <Drill className="h-6 w-6 text-rig-accent" />
-                مكونات حفارة النفط
+                أدوات الحفر
               </h1>
               <p className="text-rig-secondary text-lg">
                 استكشف وتعلم عن جميع مكونات حفارة النفط الـ 61
@@ -82,7 +83,7 @@ const RigDiagram = () => {
             </div>
             
             <TabsContent value="diagram" className="mt-0">
-              <div className="bg-white rounded-xl border border-rig-border overflow-hidden shadow-sm">
+              <div className="bg-gradient-to-br from-white via-blue-50 to-sky-50 rounded-xl border border-rig-border overflow-hidden shadow-md">
                 <RigDiagramSVG 
                   width={1200} 
                   height={800} 
@@ -122,7 +123,7 @@ const RigDiagram = () => {
               </div>
               
               {searchQuery && filteredComponents.length === 0 && (
-                <div className="bg-white border border-rig-border rounded-lg p-8 text-center">
+                <div className="bg-gradient-to-br from-white via-blue-50 to-sky-50 border border-rig-border rounded-lg p-8 text-center">
                   <Search className="h-10 w-10 mx-auto mb-4 text-rig-secondary opacity-50" />
                   <h3 className="text-lg font-medium mb-2 text-rig-primary">لا توجد مكونات</h3>
                   <p className="text-rig-secondary mb-6">
